@@ -1,44 +1,42 @@
-import { useState, Component } from 'react';
-import User from './User';
+import { Component } from 'react';
 
+import User from './User';
 import classes from './Users.module.css';
 
-const DUMMY_USERS = [
-    { id: 'u1', name: 'Max' },
-    { id: 'u2', name: 'Manuel' },
-    { id: 'u3', name: 'Julie' },
-];
-
 class Users extends Component {
-    constructor() {
-        super();
-        this.state = {
-            showUsers: true,
-            moreState: 'test',
-        }; //'the state has to be an object
-    }
-    toggleUsersHandler() {
-        this.setState((curState) => {
-            return { showUsers: !curState.showUsers };
-        }); //' the states are merges not override in class based component, which means the other states wont be erased
-    }
-    render() {
-        const usersList = (
-            <ul>
-                {DUMMY_USERS.map((user) => (
-                    <User key={user.id} name={user.name} />
-                ))}
-            </ul>
-        );
-        return (
-            <div className={classes.users}>
-                <button onClick={this.toggleUsersHandler.bind(this)}>
-                    {this.state.showUsers ? 'Hide' : 'Show'} Users
-                </button>
-                {this.state.showUsers && usersList}
-            </div>
-        );
-    }
+  constructor() {
+    super();
+    this.state = {
+      showUsers: true,
+      more: 'Test',
+    };
+  }
+
+  toggleUsersHandler() {
+    // this.state.showUsers = false; // NOT!
+    this.setState((curState) => {
+      return { showUsers: !curState.showUsers };
+    });
+  }
+
+  render() {
+    const usersList = (
+      <ul>
+        {this.props.users.map((user) => (
+          <User key={user.id} name={user.name} />
+        ))}
+      </ul>
+    );
+
+    return (
+      <div className={classes.users}>
+        <button onClick={this.toggleUsersHandler.bind(this)}>
+          {this.state.showUsers ? 'Hide' : 'Show'} Users
+        </button>
+        {this.state.showUsers && usersList}
+      </div>
+    );
+  }
 }
 
 export default Users;
