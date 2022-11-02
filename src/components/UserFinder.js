@@ -1,16 +1,14 @@
 
-import { Fragment, useState, useEffect, Component } from 'react';
+import { Fragment, Component } from 'react';
 
 import Users from './Users';
 import classes from './UserFinder.module.css';
+import UsersConctext from './store/users-context';
 
-const DUMMY_USERS = [
-  { id: 'u1', name: 'Max' },
-  { id: 'u2', name: 'Manuel' },
-  { id: 'u3', name: 'Julie' },
-];
 
 class UserFinder extends Component {
+
+  static contextType = UsersConctext//' can only access to one context
   constructor() {
     super();
     this.state = {
@@ -19,32 +17,35 @@ class UserFinder extends Component {
     };
   }
 
+  searchChangeHandler(event) {
+    this.setState({ searchTerm: event.target.value });
+  }
+
   componentDidMount() {
     // Send http request...
-    this.setState({ filteredUsers: DUMMY_USERS });
+    this.setState({ filteredUsers: this.context.users });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.searchTerm !== this.state.searchTerm) {
       this.setState({
-        filteredUsers: DUMMY_USERS.filter((user) =>
+        filteredUsers: this.context.users.filter((user) =>
           user.name.includes(this.state.searchTerm)
         ),
       });
     }
   }
 
-  searchChangeHandler(event) {
-    this.setState({ searchTerm: event.target.value });
-  }
 
   render() {
     return (
       <Fragment>
+     
         <div className={classes.finder}>
           <input type='search' onChange={this.searchChangeHandler.bind(this)} />
         </div>
         <Users users={this.state.filteredUsers} />
+      
       </Fragment>
     );
   }

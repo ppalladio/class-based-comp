@@ -13,9 +13,9 @@ class Users extends Component {
   }
 
   toggleUsersHandler() {
-    // this.state.showUsers = false; // NOT!
-    this.setState((curState) => {
-      return { showUsers: !curState.showUsers };
+  
+    this.setState((curState) => { //'setState is alway an object and when state changes, it will not be overwritten, it will simply be merged.
+      return { showUsers: !curState.showUsers };//' has to be xxx.state
     });
   }
 
